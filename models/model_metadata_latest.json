@@ -1,0 +1,134 @@
+{
+  "version": "v1",
+  "model_name": "XGBoost",
+  "model_path": "models\\xgboost_model_v1.joblib",
+  "latest_model_path": "models\\xgboost_model_latest.joblib",
+  "training_date": "2026-08-11T08:13:22.081481+00:00",
+  "dataset_size": 196273,
+  "number_of_stocks": 106,
+  "symbol": "GLOBAL",
+  "feature_list": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume",
+    "SMA_20",
+    "SMA_50",
+    "SMA_200",
+    "EMA_20",
+    "EMA_50",
+    "RSI",
+    "MACD",
+    "MACD_signal",
+    "MACD_hist",
+    "BB_upper",
+    "BB_lower",
+    "BB_middle",
+    "ATR",
+    "Daily_Return",
+    "Return_5D",
+    "Return_10D",
+    "Return_20D",
+    "Volume_MA_20",
+    "Volume_Ratio",
+    "Rolling_Volatility"
+  ],
+  "feature_count": 25,
+  "training_samples": 137383,
+  "validation_samples": 29440,
+  "test_samples": 29450,
+  "training_date_range": {
+    "start": "2015-10-21",
+    "end": "2023-08-03"
+  },
+  "validation_date_range": {
+    "start": "2021-07-16",
+    "end": "2023-10-13"
+  },
+  "test_date_range": {
+    "start": "2022-10-06",
+    "end": "2023-12-27"
+  },
+  "processed_data_summary": {
+    "rows": 196379,
+    "stocks": 106,
+    "earliest_date": "2015-10-21",
+    "latest_date": "2023-12-28",
+    "feature_count": 25,
+    "missing_values": 0
+  },
+  "class_balance": {
+    "target_0": 68552,
+    "target_1": 68831,
+    "scale_pos_weight": 0.9959465938312679,
+    "weighted": false
+  },
+  "leakage_check": "Feature columns are selected from current and historical OHLCV/technical fields only; future/next/target/label columns are rejected.",
+  "feature_importance_path": "models\\feature_importance.json",
+  "top_features": [
+    {
+      "feature": "EMA_20",
+      "importance": 0.04833432659506798
+    },
+    {
+      "feature": "Low",
+      "importance": 0.04712503403425217
+    },
+    {
+      "feature": "Volume",
+      "importance": 0.04385310038924217
+    },
+    {
+      "feature": "MACD",
+      "importance": 0.042761385440826416
+    },
+    {
+      "feature": "EMA_50",
+      "importance": 0.042494114488363266
+    },
+    {
+      "feature": "SMA_50",
+      "importance": 0.041876088827848434
+    },
+    {
+      "feature": "Close",
+      "importance": 0.041826508939266205
+    },
+    {
+      "feature": "Volume_Ratio",
+      "importance": 0.041543737053871155
+    },
+    {
+      "feature": "Return_20D",
+      "importance": 0.04143565148115158
+    },
+    {
+      "feature": "Daily_Return",
+      "importance": 0.0408608503639698
+    }
+  ],
+  "metrics": {
+    "accuracy": 0.5149405772495755,
+    "precision": 0.5355204889914551,
+    "recall": 0.5566649377593361,
+    "f1": 0.5458880376386813,
+    "roc_auc": 0.5171451073488004,
+    "confusion_matrix": [
+      [
+        6579,
+        7447
+      ],
+      [
+        6838,
+        8586
+      ]
+    ],
+    "total_test_samples": 29450,
+    "num_predictions": 29450,
+    "up_predictions": 16033,
+    "down_predictions": 13417,
+    "actual_up": 15424,
+    "actual_down": 14026
+  }
+}

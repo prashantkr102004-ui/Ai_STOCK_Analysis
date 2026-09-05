@@ -1,0 +1,1 @@
+"""AI MarketGuard backend package."""

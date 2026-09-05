@@ -1,0 +1,102 @@
+[
+  {
+    "feature": "EMA_20",
+    "importance": 0.04833432659506798
+  },
+  {
+    "feature": "Low",
+    "importance": 0.04712503403425217
+  },
+  {
+    "feature": "Volume",
+    "importance": 0.04385310038924217
+  },
+  {
+    "feature": "MACD",
+    "importance": 0.042761385440826416
+  },
+  {
+    "feature": "EMA_50",
+    "importance": 0.042494114488363266
+  },
+  {
+    "feature": "SMA_50",
+    "importance": 0.041876088827848434
+  },
+  {
+    "feature": "Close",
+    "importance": 0.041826508939266205
+  },
+  {
+    "feature": "Volume_Ratio",
+    "importance": 0.041543737053871155
+  },
+  {
+    "feature": "Return_20D",
+    "importance": 0.04143565148115158
+  },
+  {
+    "feature": "Daily_Return",
+    "importance": 0.0408608503639698
+  },
+  {
+    "feature": "SMA_20",
+    "importance": 0.040819015353918076
+  },
+  {
+    "feature": "Return_5D",
+    "importance": 0.03986268863081932
+  },
+  {
+    "feature": "Return_10D",
+    "importance": 0.03980028256773949
+  },
+  {
+    "feature": "SMA_200",
+    "importance": 0.03949392959475517
+  },
+  {
+    "feature": "BB_upper",
+    "importance": 0.03925855830311775
+  },
+  {
+    "feature": "ATR",
+    "importance": 0.03868405520915985
+  },
+  {
+    "feature": "High",
+    "importance": 0.03812476247549057
+  },
+  {
+    "feature": "MACD_hist",
+    "importance": 0.0375056117773056
+  },
+  {
+    "feature": "BB_middle",
+    "importance": 0.03713038191199303
+  },
+  {
+    "feature": "Rolling_Volatility",
+    "importance": 0.03705022111535072
+  },
+  {
+    "feature": "RSI",
+    "importance": 0.03683191165328026
+  },
+  {
+    "feature": "Open",
+    "importance": 0.03641228750348091
+  },
+  {
+    "feature": "BB_lower",
+    "importance": 0.036081280559301376
+  },
+  {
+    "feature": "Volume_MA_20",
+    "importance": 0.03583449497818947
+  },
+  {
+    "feature": "MACD_signal",
+    "importance": 0.0349997915327549
+  }
+]
