@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from ml.prediction.predict import predict_latest
+from backend.app.core.config import get_settings
 from backend.app.services.fundamental_service import fundamental_as_score
 from backend.app.services.stock_service import load_processed_data
 from backend.app.services.sentiment_service import sentiment_as_score_0_to_100
@@ -40,10 +41,23 @@ def model_status() -> dict:
     if not metadata:
         return {"trained": False, "message": "Model not trained"}
     metrics = metadata.get("metrics", {})
+    comparison = model_comparison()
+    production_model = comparison.get("production_model") if comparison.get("available") else "xgboost_current"
+    production_item = next(
+        (item for item in comparison.get("models", []) if item.get("production_model")),
+        None,
+    )
     return {
         "trained": True,
         "model_name": metadata.get("model_name"),
         "model_version": metadata.get("version"),
+        "production_model": production_model,
+        "production_model_name": comparison.get("production_model_name") if comparison.get("available") else metadata.get("model_name"),
+        "recommended_model": comparison.get("recommended_model") if comparison.get("available") else None,
+        "selected_threshold": production_item.get("selected_threshold") if production_item else 0.5,
+        "validation_metrics": production_item.get("validation_metrics") if production_item else None,
+        "test_metrics": production_item.get("test_metrics") if production_item else metrics,
+        "overfitting_warning": production_item.get("overfitting_warning") if production_item else None,
         "training_date": metadata.get("training_date"),
         "feature_count": metadata.get("feature_count", len(metadata.get("feature_list", []))),
         "training_samples": metadata.get("training_samples"),
@@ -63,3 +77,18 @@ def feature_importance() -> list[dict]:
         return []
     items = json.loads(path.read_text(encoding="utf-8"))
     return sorted(items, key=lambda item: item["importance"], reverse=True)
+
+
+def model_comparison() -> dict:
+    path = get_settings().model_comparison_path
+    if not path.exists():
+        return {
+            "available": False,
+            "message": "Model comparison has not been run. Run python scripts/compare_models.py first.",
+            "models": [],
+        }
+    data = json.loads(path.read_text(encoding="utf-8"))
+    production_key = data.get("production_model")
+    for item in data.get("models", []):
+        item["production_model"] = item.get("model_key") == production_key
+    return {"available": True, **data}

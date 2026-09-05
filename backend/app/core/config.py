@@ -56,6 +56,11 @@ class Settings(BaseModel):
         (80, "High Confidence"),
         (101, "Very High Confidence"),
     )
+    production_model_key: str = os.getenv("PRODUCTION_MODEL_KEY", "xgboost_current")
+    model_comparison_path: Path = Path(os.getenv("MODEL_COMPARISON_PATH", "models/experiments/model_comparison.json"))
+    model_selection_min_metric_margin: float = float(os.getenv("MODEL_SELECTION_MIN_METRIC_MARGIN", "0.02"))
+    model_selection_max_drawdown_tolerance: float = float(os.getenv("MODEL_SELECTION_MAX_DRAWDOWN_TOLERANCE", "0.05"))
+    model_comparison_random_seed: int = int(os.getenv("MODEL_COMPARISON_RANDOM_SEED", "42"))
 
 
 @lru_cache

@@ -9,6 +9,8 @@ export default function ModelStatus({ model, loading, error }) {
   const metrics = [
     ["Model", model.model_name],
     ["Version", model.model_version],
+    ["Production Model", model.production_model_name || model.production_model],
+    ["Selected Threshold", model.selected_threshold],
     ["Training Date", formatDate(model.training_date)],
     ["Feature Count", model.feature_count],
     ["Training Samples", formatNumber(model.training_samples)],
@@ -32,6 +34,7 @@ export default function ModelStatus({ model, loading, error }) {
           </div>
         ))}
       </div>
+      {model.overfitting_warning && <p className="warningNote">{model.overfitting_warning}</p>}
       <small>Metrics are historical test metrics.</small>
     </section>
   );

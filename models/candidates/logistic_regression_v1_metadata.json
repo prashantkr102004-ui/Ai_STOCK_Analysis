@@ -1,0 +1,364 @@
+{
+  "model_key": "logistic_regression",
+  "model_name": "Logistic Regression",
+  "version": "v1",
+  "training_date": "2026-09-05T17:40:21.514318+00:00",
+  "feature_list": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume",
+    "SMA_20",
+    "SMA_50",
+    "SMA_200",
+    "EMA_20",
+    "EMA_50",
+    "RSI",
+    "MACD",
+    "MACD_signal",
+    "MACD_hist",
+    "BB_upper",
+    "BB_lower",
+    "BB_middle",
+    "ATR",
+    "Daily_Return",
+    "Return_5D",
+    "Return_10D",
+    "Return_20D",
+    "Volume_MA_20",
+    "Volume_Ratio",
+    "Rolling_Volatility"
+  ],
+  "feature_count": 25,
+  "dataset_date_range": {
+    "start": "2015-10-21",
+    "end": "2023-12-27"
+  },
+  "hyperparameters": {
+    "C": 1.0,
+    "class_weight": null,
+    "max_iter": 2000
+  },
+  "selected_threshold": 0.5,
+  "threshold_analysis": {
+    "tested_thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.49612803304078473,
+        "recall": 0.4553269256802491,
+        "f1": 0.47485264532523913,
+        "up_predictions": 13559,
+        "down_predictions": 15881
+      },
+      {
+        "threshold": 0.55,
+        "precision": 0.5,
+        "recall": 0.00385812914579667,
+        "f1": 0.007657173562600752,
+        "up_predictions": 114,
+        "down_predictions": 29326
+      },
+      {
+        "threshold": 0.6,
+        "precision": 0.2857142857142857,
+        "recall": 0.0001353729524840937,
+        "f1": 0.000270617684865706,
+        "up_predictions": 7,
+        "down_predictions": 29433
+      },
+      {
+        "threshold": 0.65,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "up_predictions": 1,
+        "down_predictions": 29439
+      }
+    ],
+    "selected_threshold": 0.5,
+    "selection_rule": "highest validation F1, precision tie-break"
+  },
+  "train_metrics": {
+    "accuracy": 0.508956712256975,
+    "precision": 0.5104462134382529,
+    "recall": 0.4862925135476747,
+    "f1": 0.4980767084557866,
+    "roc_auc": 0.513139443756666,
+    "confusion_matrix": [
+      [
+        36450,
+        32102
+      ],
+      [
+        35359,
+        33472
+      ]
+    ],
+    "inference_time_seconds": 0.047564,
+    "threshold": 0.5
+  },
+  "validation_metrics": {
+    "accuracy": 0.49459918478260867,
+    "precision": 0.49612803304078473,
+    "recall": 0.4553269256802491,
+    "f1": 0.47485264532523913,
+    "roc_auc": 0.4951481866771785,
+    "confusion_matrix": [
+      [
+        7834,
+        6832
+      ],
+      [
+        8047,
+        6727
+      ]
+    ],
+    "inference_time_seconds": 0.011367,
+    "threshold": 0.5
+  },
+  "test_metrics": {
+    "accuracy": 0.49884550084889645,
+    "precision": 0.5338491295938105,
+    "recall": 0.3399896265560166,
+    "f1": 0.41541569295361824,
+    "roc_auc": 0.5085053032808661,
+    "confusion_matrix": [
+      [
+        9447,
+        4579
+      ],
+      [
+        10180,
+        5244
+      ]
+    ],
+    "inference_time_seconds": 0.012177,
+    "threshold": 0.5
+  },
+  "time_series_validation": {
+    "method": "TimeSeriesSplit expanding-window validation",
+    "folds": [
+      {
+        "fold": 1,
+        "accuracy": 0.5045258362306678,
+        "precision": 0.4947789530783835,
+        "recall": 0.44556390059229406,
+        "f1": 0.4688835341365462,
+        "roc_auc": 0.5091174660935847,
+        "confusion_matrix": [
+          [
+            9536,
+            7451
+          ],
+          [
+            9080,
+            7297
+          ]
+        ],
+        "inference_time_seconds": 0.013864,
+        "threshold": 0.5
+      },
+      {
+        "fold": 2,
+        "accuracy": 0.5042261119769812,
+        "precision": 0.4901790370241613,
+        "recall": 0.34569414649095925,
+        "f1": 0.4054491211674634,
+        "roc_auc": 0.5022220335979903,
+        "confusion_matrix": [
+          [
+            11183,
+            5866
+          ],
+          [
+            10675,
+            5640
+          ]
+        ],
+        "inference_time_seconds": 0.015201,
+        "threshold": 0.5
+      },
+      {
+        "fold": 3,
+        "accuracy": 0.48792111257642967,
+        "precision": 0.5459010200226672,
+        "recall": 0.16447555631438165,
+        "f1": 0.2527881040892193,
+        "roc_auc": 0.5040553274026194,
+        "confusion_matrix": [
+          [
+            13389,
+            2404
+          ],
+          [
+            14681,
+            2890
+          ]
+        ],
+        "inference_time_seconds": 0.015945,
+        "threshold": 0.5
+      },
+      {
+        "fold": 4,
+        "accuracy": 0.49529432921712024,
+        "precision": 0.4957753328065163,
+        "recall": 0.4883832335329341,
+        "f1": 0.49205152182437933,
+        "roc_auc": 0.4966502856025826,
+        "confusion_matrix": [
+          [
+            8369,
+            8295
+          ],
+          [
+            8544,
+            8156
+          ]
+        ],
+        "inference_time_seconds": 0.02489,
+        "threshold": 0.5
+      }
+    ],
+    "average_f1": 0.40479307030440204,
+    "average_roc_auc": 0.5030112781741942
+  },
+  "calibration": {
+    "brier_score": 0.25017060603865976,
+    "curve": [
+      {
+        "mean_predicted_probability": 0.3883579427047802,
+        "fraction_positive": 0.3076923076923077
+      },
+      {
+        "mean_predicted_probability": 0.5000668066484795,
+        "fraction_positive": 0.5019714479945615
+      },
+      {
+        "mean_predicted_probability": 0.6276062355671516,
+        "fraction_positive": 0.2857142857142857
+      }
+    ],
+    "note": "Lower Brier score indicates better probability calibration; calibration is evaluated on validation data only."
+  },
+  "backtest": {
+    "symbol": "RELIANCE",
+    "start_date": "2022-10-06",
+    "end_date": "2023-12-27",
+    "strategy_return": -0.0391,
+    "strategy_return_pct": -3.91,
+    "buy_hold_return": 0.1513,
+    "buy_hold_return_pct": 15.13,
+    "max_drawdown": -0.1423,
+    "max_drawdown_pct": -14.23,
+    "sharpe_ratio": -0.2845,
+    "number_of_trades": 39,
+    "win_rate": 0.5641
+  },
+  "training_time_seconds": 0.5047,
+  "overfitting_warning": null,
+  "feature_importance": [
+    {
+      "feature": "BB_lower",
+      "importance": 0.16590965732466365,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "BB_upper",
+      "importance": 0.14036435711324294,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "SMA_200",
+      "importance": 0.08249362260765908,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "High",
+      "importance": 0.0472118274016641,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Low",
+      "importance": 0.0445038291442881,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Close",
+      "importance": 0.038572991626096974,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "ATR",
+      "importance": 0.03629530438488942,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "SMA_50",
+      "importance": 0.03564058382126847,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Open",
+      "importance": 0.027544475241563803,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "EMA_50",
+      "importance": 0.02720515734877391,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Daily_Return",
+      "importance": 0.025985992189298923,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Volume_Ratio",
+      "importance": 0.02345446504751253,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Return_5D",
+      "importance": 0.014930094341204916,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Rolling_Volatility",
+      "importance": 0.011029051570714108,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Volume_MA_20",
+      "importance": 0.009289818806436523,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "EMA_20",
+      "importance": 0.008524942079000706,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "MACD_hist",
+      "importance": 0.008096438290682404,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "SMA_20",
+      "importance": 0.004528609796474896,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "BB_middle",
+      "importance": 0.004528609796474896,
+      "meaning": "Standardized absolute coefficient magnitude"
+    },
+    {
+      "feature": "Return_20D",
+      "importance": 0.0032197616517615157,
+      "meaning": "Standardized absolute coefficient magnitude"
+    }
+  ],
+  "model_path": "models\\candidates\\logistic_regression_v1.joblib",
+  "metadata_path": "models\\candidates\\logistic_regression_v1_metadata.json"
+}

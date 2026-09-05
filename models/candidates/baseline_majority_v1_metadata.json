@@ -1,0 +1,253 @@
+{
+  "model_key": "baseline_majority",
+  "model_name": "Baseline Majority Class",
+  "version": "v1",
+  "training_date": "2026-09-05T17:40:18.635537+00:00",
+  "feature_list": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume",
+    "SMA_20",
+    "SMA_50",
+    "SMA_200",
+    "EMA_20",
+    "EMA_50",
+    "RSI",
+    "MACD",
+    "MACD_signal",
+    "MACD_hist",
+    "BB_upper",
+    "BB_lower",
+    "BB_middle",
+    "ATR",
+    "Daily_Return",
+    "Return_5D",
+    "Return_10D",
+    "Return_20D",
+    "Volume_MA_20",
+    "Volume_Ratio",
+    "Rolling_Volatility"
+  ],
+  "feature_count": 25,
+  "dataset_date_range": {
+    "start": "2015-10-21",
+    "end": "2023-12-27"
+  },
+  "hyperparameters": {
+    "strategy": "most_frequent"
+  },
+  "selected_threshold": 0.5,
+  "threshold_analysis": {
+    "tested_thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.5018342391304348,
+        "recall": 1.0,
+        "f1": 0.6682951101461075,
+        "up_predictions": 29440,
+        "down_predictions": 0
+      },
+      {
+        "threshold": 0.55,
+        "precision": 0.5018342391304348,
+        "recall": 1.0,
+        "f1": 0.6682951101461075,
+        "up_predictions": 29440,
+        "down_predictions": 0
+      },
+      {
+        "threshold": 0.6,
+        "precision": 0.5018342391304348,
+        "recall": 1.0,
+        "f1": 0.6682951101461075,
+        "up_predictions": 29440,
+        "down_predictions": 0
+      },
+      {
+        "threshold": 0.65,
+        "precision": 0.5018342391304348,
+        "recall": 1.0,
+        "f1": 0.6682951101461075,
+        "up_predictions": 29440,
+        "down_predictions": 0
+      }
+    ],
+    "selected_threshold": 0.5,
+    "selection_rule": "highest validation F1, precision tie-break"
+  },
+  "train_metrics": {
+    "accuracy": 0.5010154094756993,
+    "precision": 0.5010154094756993,
+    "recall": 1.0,
+    "f1": 0.667568642284229,
+    "roc_auc": 0.5,
+    "confusion_matrix": [
+      [
+        0,
+        68552
+      ],
+      [
+        0,
+        68831
+      ]
+    ],
+    "inference_time_seconds": 0.001435,
+    "threshold": 0.5
+  },
+  "validation_metrics": {
+    "accuracy": 0.5018342391304348,
+    "precision": 0.5018342391304348,
+    "recall": 1.0,
+    "f1": 0.6682951101461075,
+    "roc_auc": 0.5,
+    "confusion_matrix": [
+      [
+        0,
+        14666
+      ],
+      [
+        0,
+        14774
+      ]
+    ],
+    "inference_time_seconds": 0.000255,
+    "threshold": 0.5
+  },
+  "test_metrics": {
+    "accuracy": 0.5237351443123939,
+    "precision": 0.5237351443123939,
+    "recall": 1.0,
+    "f1": 0.6874359317199269,
+    "roc_auc": 0.5,
+    "confusion_matrix": [
+      [
+        0,
+        14026
+      ],
+      [
+        0,
+        15424
+      ]
+    ],
+    "inference_time_seconds": 0.000483,
+    "threshold": 0.5
+  },
+  "time_series_validation": {
+    "method": "TimeSeriesSplit expanding-window validation",
+    "folds": [
+      {
+        "fold": 1,
+        "accuracy": 0.5091415897374415,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.5,
+        "confusion_matrix": [
+          [
+            16987,
+            0
+          ],
+          [
+            16377,
+            0
+          ]
+        ],
+        "inference_time_seconds": 0.000282,
+        "threshold": 0.5
+      },
+      {
+        "fold": 2,
+        "accuracy": 0.5109998801102985,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.5,
+        "confusion_matrix": [
+          [
+            17049,
+            0
+          ],
+          [
+            16315,
+            0
+          ]
+        ],
+        "inference_time_seconds": 0.000456,
+        "threshold": 0.5
+      },
+      {
+        "fold": 3,
+        "accuracy": 0.4733545138472605,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.5,
+        "confusion_matrix": [
+          [
+            15793,
+            0
+          ],
+          [
+            17571,
+            0
+          ]
+        ],
+        "inference_time_seconds": 0.000328,
+        "threshold": 0.5
+      },
+      {
+        "fold": 4,
+        "accuracy": 0.5005395036566359,
+        "precision": 0.5005395036566359,
+        "recall": 1.0,
+        "f1": 0.6671460530520933,
+        "roc_auc": 0.5,
+        "confusion_matrix": [
+          [
+            0,
+            16664
+          ],
+          [
+            0,
+            16700
+          ]
+        ],
+        "inference_time_seconds": 0.00035,
+        "threshold": 0.5
+      }
+    ],
+    "average_f1": 0.16678651326302332,
+    "average_roc_auc": 0.5
+  },
+  "calibration": {
+    "brier_score": 0.4981657608695652,
+    "curve": [
+      {
+        "mean_predicted_probability": 1.0,
+        "fraction_positive": 0.5018342391304348
+      }
+    ],
+    "note": "Lower Brier score indicates better probability calibration; calibration is evaluated on validation data only."
+  },
+  "backtest": {
+    "symbol": "RELIANCE",
+    "start_date": "2022-10-06",
+    "end_date": "2023-12-27",
+    "strategy_return": 0.1572,
+    "strategy_return_pct": 15.72,
+    "buy_hold_return": 0.1513,
+    "buy_hold_return_pct": 15.13,
+    "max_drawdown": -0.1928,
+    "max_drawdown_pct": -19.28,
+    "sharpe_ratio": 0.7775,
+    "number_of_trades": 1,
+    "win_rate": 1.0
+  },
+  "training_time_seconds": 0.0433,
+  "overfitting_warning": null,
+  "feature_importance": [],
+  "model_path": null,
+  "metadata_path": "models\\candidates\\baseline_majority_v1_metadata.json"
+}

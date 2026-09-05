@@ -1,0 +1,369 @@
+{
+  "model_key": "xgboost_tuned",
+  "model_name": "XGBoost Tuned",
+  "version": "v2_candidate",
+  "training_date": "2026-09-05T17:41:34.522553+00:00",
+  "feature_list": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume",
+    "SMA_20",
+    "SMA_50",
+    "SMA_200",
+    "EMA_20",
+    "EMA_50",
+    "RSI",
+    "MACD",
+    "MACD_signal",
+    "MACD_hist",
+    "BB_upper",
+    "BB_lower",
+    "BB_middle",
+    "ATR",
+    "Daily_Return",
+    "Return_5D",
+    "Return_10D",
+    "Return_20D",
+    "Volume_MA_20",
+    "Volume_Ratio",
+    "Rolling_Volatility"
+  ],
+  "feature_count": 25,
+  "dataset_date_range": {
+    "start": "2015-10-21",
+    "end": "2023-12-27"
+  },
+  "hyperparameters": {
+    "n_estimators": 220,
+    "max_depth": 3,
+    "learning_rate": 0.04,
+    "subsample": 0.85,
+    "colsample_bytree": 0.85,
+    "min_child_weight": 3,
+    "reg_alpha": 0.05,
+    "reg_lambda": 1.5
+  },
+  "selected_threshold": 0.5,
+  "threshold_analysis": {
+    "tested_thresholds": [
+      {
+        "threshold": 0.5,
+        "precision": 0.5056704469646431,
+        "recall": 0.5643698389061865,
+        "f1": 0.5334101013978185,
+        "up_predictions": 16489,
+        "down_predictions": 12951
+      },
+      {
+        "threshold": 0.55,
+        "precision": 0.553014553014553,
+        "recall": 0.01800460268038446,
+        "f1": 0.03487381186496231,
+        "up_predictions": 481,
+        "down_predictions": 28959
+      },
+      {
+        "threshold": 0.6,
+        "precision": 0.2727272727272727,
+        "recall": 0.0002030594287261405,
+        "f1": 0.00040581670612106866,
+        "up_predictions": 11,
+        "down_predictions": 29429
+      },
+      {
+        "threshold": 0.65,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "up_predictions": 0,
+        "down_predictions": 29440
+      }
+    ],
+    "selected_threshold": 0.5,
+    "selection_rule": "highest validation F1, precision tie-break"
+  },
+  "train_metrics": {
+    "accuracy": 0.5372862726829375,
+    "precision": 0.537105463571489,
+    "recall": 0.5532972062006944,
+    "f1": 0.5450811166691714,
+    "roc_auc": 0.5560456086689222,
+    "confusion_matrix": [
+      [
+        35730,
+        32822
+      ],
+      [
+        30747,
+        38084
+      ]
+    ],
+    "inference_time_seconds": 0.059373,
+    "threshold": 0.5
+  },
+  "validation_metrics": {
+    "accuracy": 0.5045176630434782,
+    "precision": 0.5056704469646431,
+    "recall": 0.5643698389061865,
+    "f1": 0.5334101013978185,
+    "roc_auc": 0.5068365925514675,
+    "confusion_matrix": [
+      [
+        6515,
+        8151
+      ],
+      [
+        6436,
+        8338
+      ]
+    ],
+    "inference_time_seconds": 0.013218,
+    "threshold": 0.5
+  },
+  "test_metrics": {
+    "accuracy": 0.51830220713073,
+    "precision": 0.538499813409628,
+    "recall": 0.5613329875518672,
+    "f1": 0.5496793854358454,
+    "roc_auc": 0.5181182301925351,
+    "confusion_matrix": [
+      [
+        6606,
+        7420
+      ],
+      [
+        6766,
+        8658
+      ]
+    ],
+    "inference_time_seconds": 0.0159,
+    "threshold": 0.5
+  },
+  "time_series_validation": {
+    "method": "TimeSeriesSplit expanding-window validation",
+    "folds": [
+      {
+        "fold": 1,
+        "accuracy": 0.5074331614914279,
+        "precision": 0.4981839036513095,
+        "recall": 0.4773768089393662,
+        "f1": 0.48755846585594015,
+        "roc_auc": 0.5114662283600173,
+        "confusion_matrix": [
+          [
+            9112,
+            7875
+          ],
+          [
+            8559,
+            7818
+          ]
+        ],
+        "inference_time_seconds": 0.021624,
+        "threshold": 0.5
+      },
+      {
+        "fold": 2,
+        "accuracy": 0.505035367461935,
+        "precision": 0.4927303280485132,
+        "recall": 0.41336193686791295,
+        "f1": 0.4495700286647557,
+        "roc_auc": 0.5091780416875251,
+        "confusion_matrix": [
+          [
+            10106,
+            6943
+          ],
+          [
+            9571,
+            6744
+          ]
+        ],
+        "inference_time_seconds": 0.02094,
+        "threshold": 0.5
+      },
+      {
+        "fold": 3,
+        "accuracy": 0.496553171082604,
+        "precision": 0.5358532518065592,
+        "recall": 0.32917876045757216,
+        "f1": 0.40782654680063457,
+        "roc_auc": 0.5100894939716191,
+        "confusion_matrix": [
+          [
+            10783,
+            5010
+          ],
+          [
+            11787,
+            5784
+          ]
+        ],
+        "inference_time_seconds": 0.018753,
+        "threshold": 0.5
+      },
+      {
+        "fold": 4,
+        "accuracy": 0.49967030332094475,
+        "precision": 0.5001838524977675,
+        "recall": 0.5701796407185629,
+        "f1": 0.5328930800011192,
+        "roc_auc": 0.5032149676882433,
+        "confusion_matrix": [
+          [
+            7149,
+            9515
+          ],
+          [
+            7178,
+            9522
+          ]
+        ],
+        "inference_time_seconds": 0.019643,
+        "threshold": 0.5
+      }
+    ],
+    "average_f1": 0.4694620303306124,
+    "average_roc_auc": 0.5084871829268511
+  },
+  "calibration": {
+    "brier_score": 0.2501152455806732,
+    "curve": [
+      {
+        "mean_predicted_probability": 0.3886130228638649,
+        "fraction_positive": 0.5
+      },
+      {
+        "mean_predicted_probability": 0.5026425041681499,
+        "fraction_positive": 0.5019203969953434
+      },
+      {
+        "mean_predicted_probability": 0.6087684414603494,
+        "fraction_positive": 0.2727272727272727
+      }
+    ],
+    "note": "Lower Brier score indicates better probability calibration; calibration is evaluated on validation data only."
+  },
+  "backtest": {
+    "symbol": "RELIANCE",
+    "start_date": "2022-10-06",
+    "end_date": "2023-12-27",
+    "strategy_return": 0.1473,
+    "strategy_return_pct": 14.73,
+    "buy_hold_return": 0.1513,
+    "buy_hold_return_pct": 15.13,
+    "max_drawdown": -0.2243,
+    "max_drawdown_pct": -22.43,
+    "sharpe_ratio": 0.8623,
+    "number_of_trades": 32,
+    "win_rate": 0.4688
+  },
+  "training_time_seconds": 2.2247,
+  "overfitting_warning": null,
+  "feature_importance": [
+    {
+      "feature": "EMA_50",
+      "importance": 0.04849928617477417,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "EMA_20",
+      "importance": 0.04482606053352356,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Daily_Return",
+      "importance": 0.04482436925172806,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "SMA_50",
+      "importance": 0.04469875618815422,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "MACD",
+      "importance": 0.04421142116189003,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Volume_Ratio",
+      "importance": 0.04378395155072212,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "BB_middle",
+      "importance": 0.043190889060497284,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Volume",
+      "importance": 0.04297569394111633,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "RSI",
+      "importance": 0.04152385890483856,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Return_5D",
+      "importance": 0.04070022329688072,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "ATR",
+      "importance": 0.04042883589863777,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Close",
+      "importance": 0.04020730033516884,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "BB_upper",
+      "importance": 0.03955353796482086,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "MACD_hist",
+      "importance": 0.038751449435949326,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Return_20D",
+      "importance": 0.038611602038145065,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "BB_lower",
+      "importance": 0.038258425891399384,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "High",
+      "importance": 0.03807305544614792,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Rolling_Volatility",
+      "importance": 0.03802420571446419,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "SMA_200",
+      "importance": 0.03714868798851967,
+      "meaning": "Tree feature importance"
+    },
+    {
+      "feature": "Open",
+      "importance": 0.03620195388793945,
+      "meaning": "Tree feature importance"
+    }
+  ],
+  "model_path": "models\\candidates\\xgboost_tuned_v2_candidate.joblib",
+  "metadata_path": "models\\candidates\\xgboost_tuned_v2_candidate_metadata.json"
+}

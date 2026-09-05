@@ -15,6 +15,12 @@ class ModelNotTrainedError(RuntimeError):
 
 def latest_model_path(model_dir: str | Path = "models") -> Path:
     model_root = Path(model_dir)
+    production_config = model_root / "production_model.json"
+    if production_config.exists():
+        metadata = json.loads(production_config.read_text(encoding="utf-8"))
+        candidate_path = Path(metadata.get("model_path", ""))
+        if candidate_path.exists():
+            return candidate_path
     for metadata_path in (model_root / "model_metadata_latest.json", model_root / "metadata.json"):
         if not metadata_path.exists():
             continue

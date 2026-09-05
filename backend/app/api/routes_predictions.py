@@ -1,12 +1,13 @@
 from fastapi import APIRouter, HTTPException
 
-from backend.app.schemas.model import FeatureImportanceItem, ModelStatusResponse
+from backend.app.schemas.model import FeatureImportanceItem, ModelComparisonResponse, ModelStatusResponse
 from backend.app.schemas.prediction import ExplanationResponse, PredictionResponse, SignalResponse
 from backend.app.services.prediction_service import (
     feature_importance,
     latest_explanation,
     latest_prediction,
     latest_signal,
+    model_comparison,
     model_status,
 )
 from ml.prediction.predict import ModelNotTrainedError
@@ -80,3 +81,13 @@ def status():
 )
 def features():
     return feature_importance()
+
+
+@router.get(
+    "/model/comparison",
+    response_model=ModelComparisonResponse,
+    summary="Get model comparison results",
+    description="Return saved offline model comparison metrics, backtests, validation notes, and production model recommendation.",
+)
+def comparison():
+    return model_comparison()

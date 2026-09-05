@@ -6,7 +6,7 @@ AI MarketGuard V1 is designed to run from local historical CSV or Parquet files.
 
 ## Current Status
 
-The project includes local CSV ingestion, cleaning, technical indicators, target generation, XGBoost training, prediction, signal generation, explainability scoring, optional local historical-news sentiment, backtesting, FastAPI endpoints, PostgreSQL schema, Docker Compose, and a Vite React dashboard. V1 still uses local historical files only.
+The project includes local CSV ingestion, cleaning, technical indicators, target generation, XGBoost training, offline model comparison, prediction, signal generation, explainability scoring, optional local historical-news sentiment, backtesting, FastAPI endpoints, PostgreSQL schema, Docker Compose, and a Vite React dashboard. V1 still uses local historical files only.
 
 ## Architecture
 
@@ -16,6 +16,7 @@ Historical CSV
 -> Technical Indicators
 -> Feature Engineering
 -> XGBoost
+-> Offline Model Comparison
 -> Prediction
 -> Signal
 -> Optional Local News Sentiment
@@ -104,6 +105,7 @@ python scripts/load_data.py
 python scripts/clean_data.py
 python scripts/calculate_features.py
 python scripts/train_model.py
+python scripts/compare_models.py
 python scripts/predict.py --symbol RELIANCE
 python scripts/run_backtest.py RELIANCE
 python scripts/sync_database.py
@@ -115,6 +117,14 @@ The training command accepts an optional symbol:
 ```powershell
 python scripts/train_model.py --symbol RELIANCE
 ```
+
+Compare candidate models offline with:
+
+```powershell
+python scripts/compare_models.py
+```
+
+This compares a majority-class baseline, Logistic Regression, Random Forest, the current saved XGBoost model, and a modest tuned XGBoost candidate using the same processed dataset, feature list, target definition, and chronological train/validation/test split. Results are saved to `models/experiments/model_comparison.json`, and candidate model files are saved under `models/candidates/`. FastAPI reads these saved artifacts; it does not train models on startup or during prediction requests.
 
 Start the frontend:
 
@@ -172,6 +182,7 @@ Services:
 - `GET /api/stocks/{symbol}/backtest/equity`
 - `GET /api/stocks/{symbol}/backtest/trades`
 - `GET /api/model/status`
+- `GET /api/model/comparison`
 - `GET /api/model/feature-importance`
 - `GET /api/data/status`
 
@@ -192,7 +203,6 @@ Then open `http://127.0.0.1:8000/docs` or `http://127.0.0.1:8000/redoc`.
 
 ## Future Improvements
 
-- Fundamental analysis
 - PySpark and Delta Lake for large-scale processing
 - Kafka streaming
 - Model monitoring

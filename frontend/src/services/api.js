@@ -46,6 +46,7 @@ export const api = {
   getBacktestEquity: (symbol) => request(`/stocks/${encodeURIComponent(symbol)}/backtest/equity`),
   getBacktestTrades: (symbol) => request(`/stocks/${encodeURIComponent(symbol)}/backtest/trades`),
   getModelStatus: () => request("/model/status"),
+  getModelComparison: () => request("/model/comparison"),
   getFeatureImportance: () => request("/model/feature-importance"),
   getDataStatus: () => request("/data/status")
 };

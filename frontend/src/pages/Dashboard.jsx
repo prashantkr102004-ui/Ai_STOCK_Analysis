@@ -11,6 +11,7 @@ import BacktestCard from "../components/BacktestCard.jsx";
 import EquityCurveChart from "../components/EquityCurveChart.jsx";
 import TradeTable from "../components/TradeTable.jsx";
 import ModelStatus from "../components/ModelStatus.jsx";
+import ModelComparison from "../components/ModelComparison.jsx";
 import FeatureImportance from "../components/FeatureImportance.jsx";
 import DataStatus from "../components/DataStatus.jsx";
 import NewsSentiment from "../components/NewsSentiment.jsx";
@@ -61,6 +62,7 @@ export default function Dashboard() {
   const [equity, setEquity] = useState([]);
   const [trades, setTrades] = useState([]);
   const [model, setModel] = useState(null);
+  const [modelComparison, setModelComparison] = useState(null);
   const [featureImportance, setFeatureImportance] = useState([]);
   const [dataStatus, setDataStatus] = useState(null);
 
@@ -77,10 +79,11 @@ export default function Dashboard() {
     async function loadGlobal() {
       setGlobalLoading(true);
       const nextErrors = {};
-      const [healthResult, stocksResult, modelResult, featuresResult, statusResult] = await Promise.allSettled([
+      const [healthResult, stocksResult, modelResult, comparisonResult, featuresResult, statusResult] = await Promise.allSettled([
         api.getHealth(),
         api.getStocks(),
         api.getModelStatus(),
+        api.getModelComparison(),
         api.getFeatureImportance(),
         api.getDataStatus()
       ]);
@@ -102,6 +105,9 @@ export default function Dashboard() {
 
       if (modelResult.status === "fulfilled") setModel(modelResult.value);
       else nextErrors.model = messageFrom(modelResult.reason, "Unable to load model status.");
+
+      if (comparisonResult.status === "fulfilled") setModelComparison(comparisonResult.value);
+      else nextErrors.modelComparison = messageFrom(comparisonResult.reason, "Unable to load model comparison.");
 
       if (featuresResult.status === "fulfilled") setFeatureImportance(featuresResult.value);
       else nextErrors.features = messageFrom(featuresResult.reason, "Unable to load feature importance.");
@@ -372,6 +378,7 @@ export default function Dashboard() {
         <BacktestCard backtest={backtest} loading={stockLoading || backtestLoading} error={errors.backtest} signal={signal} model={model} />
         <EquityCurveChart data={equity} loading={stockLoading || backtestLoading} error={errors.equity} />
         <TradeTable trades={trades} loading={stockLoading || backtestLoading} error={errors.trades} />
+        <ModelComparison comparison={modelComparison} loading={globalLoading} error={errors.modelComparison} />
         <ModelStatus model={model} loading={globalLoading} error={errors.model} />
         <FeatureImportance features={signal?.top_model_features || featureImportance} loading={globalLoading} error={errors.features} />
         <DataStatus status={dataStatus} loading={globalLoading} error={errors.data} />
