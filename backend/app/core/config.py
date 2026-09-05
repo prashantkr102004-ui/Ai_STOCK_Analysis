@@ -10,8 +10,8 @@ class Settings(BaseModel):
         "DATABASE_URL",
         "postgresql+psycopg2://marketguard:marketguard@localhost:5432/marketguard",
     )
-    model_path: Path = Path(os.getenv("MODEL_PATH", "models/xgboost_global.joblib"))
-    metadata_path: Path = Path(os.getenv("MODEL_METADATA_PATH", "models/metadata.json"))
+    model_path: Path = Path(os.getenv("MODEL_PATH", "models/xgboost_model_latest.joblib"))
+    metadata_path: Path = Path(os.getenv("MODEL_METADATA_PATH", "models/model_metadata_latest.json"))
     data_path: Path = Path(os.getenv("DATA_PATH", "data/stocks"))
     cleaned_path: Path = Path("ml/data/cleaned")
     processed_path: Path = Path("ml/data/processed")

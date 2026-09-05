@@ -1,173 +1,401 @@
 # AI MarketGuard
 
-AI-powered stock market intelligence and historical prediction platform.
+AI MarketGuard is a local, educational stock-market intelligence system. It combines historical price data, technical indicators, machine-learning direction prediction, explainability, historical news sentiment, company fundamentals, and backtesting behind a FastAPI backend and React dashboard.
 
-AI MarketGuard V1 is designed to run from local historical CSV or Parquet files. It does not require API keys, broker accounts, paid data services, or live market APIs. It does not perform live trading or place real orders.
+The project does not use API keys, paid market APIs, broker integrations, live trading, Kafka, PySpark, or LLM-based price prediction.
 
-## Current Status
+## Problem Statement
 
-The project includes local CSV ingestion, cleaning, technical indicators, target generation, XGBoost training, offline model comparison, prediction, signal generation, explainability scoring, optional local historical-news sentiment, backtesting, FastAPI endpoints, PostgreSQL schema, Docker Compose, and a Vite React dashboard. V1 still uses local historical files only.
+Most market dashboards mix historical charts with opaque signals. AI MarketGuard makes the full analytical chain inspectable:
+
+- Where the stock data comes from
+- Which technical features are used
+- What the model predicts
+- How confident the model is
+- Which technical, sentiment, and fundamental factors support or contradict the signal
+- How the model behaved in historical backtests
+- Whether alternative ML models perform better
+
+Predictions and backtests are analytical outputs only. They are not financial advice and do not guarantee future performance.
+
+## Features
+
+- Local historical stock-data ingestion from CSV/Parquet
+- Data cleaning and duplicate prevention
+- Technical indicators: RSI, MACD, SMA, EMA, Bollinger Bands, ATR, volume ratio, volatility, returns
+- XGBoost production prediction model
+- Offline model comparison: baseline, Logistic Regression, Random Forest, current XGBoost, tuned XGBoost
+- Chronological train/validation/test splitting
+- Time-series validation and walk-forward evaluation
+- Probability threshold analysis and calibration summary
+- Model feature importance
+- Model-based signal engine with confidence bands, technical score, combined score, and risk score
+- Optional local historical news sentiment using FinBERT
+- Optional local company fundamental analysis
+- Leakage-aware historical backtesting
+- FastAPI REST API with Swagger docs
+- Responsive React/Vite dashboard with Recharts
+- PostgreSQL schema and optional database sync
+- Backend/ML test suite
 
 ## Architecture
 
 ```text
-Historical CSV
--> Data Cleaning
--> Technical Indicators
--> Feature Engineering
--> XGBoost
--> Offline Model Comparison
--> Prediction
--> Signal
--> Optional Local News Sentiment
--> Optional Local Fundamentals
--> Backtesting
--> FastAPI
--> React Dashboard
+Historical Stock Data
+  |
+  v
+Preprocessing + Cleaning
+  |
+  v
+Technical Features
+  |
+  v
+ML Models + Model Comparison
+  |
+  v
+Production Prediction
+  |
+  v
+Signal Engine
+  |------ Technical Indicators
+  |------ Historical News Sentiment
+  |------ Company Fundamentals
+  v
+Risk + Explainability
+  |
+  v
+Backtesting
+  |
+  v
+FastAPI REST Backend
+  |
+  v
+React Dashboard
 ```
 
 ## Technology Stack
 
-- Backend: Python 3.11+, FastAPI, Uvicorn, Pydantic, SQLAlchemy
+- Backend: Python, FastAPI, Uvicorn, Pydantic, SQLAlchemy
 - Data: Pandas, NumPy, PyArrow, Parquet
-- Technical indicators: ta
+- Indicators: ta
 - Machine learning: Scikit-learn, XGBoost, Joblib
+- Sentiment: optional Hugging Face FinBERT through `transformers` and `torch`
 - Database: PostgreSQL
 - Frontend: React, Vite, JavaScript, CSS
 - Charts: Recharts
-- Testing: Pytest, FastAPI TestClient
+- Tests: Pytest, FastAPI TestClient
 
-## Local News Sentiment
+## Folder Structure
 
-Historical news CSV files can be placed in `data/news/`. Required columns are `date` and `headline`; optional columns are `symbol` and `article`. Rows without `symbol` are treated as general-market news and are not mapped to stocks automatically.
+```text
+backend/app/            FastAPI app, routes, schemas, services, config
+backend/tests/          Backend, ML, API, leakage, and edge-case tests
+data/stocks/            Local stock CSV inputs and sample stock data
+data/news/              Optional local historical news CSV files
+data/fundamentals/      Optional local company fundamental CSV files
+database/schema.sql     PostgreSQL schema
+frontend/               React dashboard
+ml/features/            Technical indicator feature engineering
+ml/preprocessing/       Stock and fundamental cleaning
+ml/training/            XGBoost training and Phase 10 model comparison
+ml/prediction/          Saved-model loading and prediction
+ml/backtesting/         Leakage-aware backtesting engine
+models/                 Model metadata, feature importance, comparison reports
+scripts/                Local pipeline, training, testing, and startup helpers
+sentiment/              News cleaning and FinBERT sentiment processing
+```
 
-The sentiment pipeline uses FinBERT without API keys when optional dependencies are installed and the model can be downloaded or cached locally:
+## Windows Setup
+
+From the project root:
 
 ```powershell
-pip install -r requirements-sentiment.txt
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+If PowerShell blocks activation, run:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+.\.venv\Scripts\Activate.ps1
+```
+
+Install frontend dependencies:
+
+```powershell
+cd frontend
+npm install
+cd ..
+```
+
+Optional sentiment dependencies:
+
+```powershell
+python -m pip install -r requirements-sentiment.txt
+```
+
+## Environment Variables
+
+Copy `.env.example` to `.env` only if you need local overrides.
+
+Important variables:
+
+```text
+DATABASE_URL
+CORS_ORIGINS
+DATA_PATH
+NEWS_PATH
+FUNDAMENTALS_PATH
+MODEL_METADATA_PATH
+MODEL_COMPARISON_PATH
+PRODUCTION_MODEL_KEY
+BULLISH_THRESHOLD
+BEARISH_THRESHOLD
+ML_WEIGHT
+TECHNICAL_WEIGHT
+SENTIMENT_WEIGHT
+FUNDAMENTAL_WEIGHT
+FINBERT_MODEL_NAME
+```
+
+No external API key is required.
+
+## Full Workflow
+
+1. Add local historical stock files to `data/stocks/`.
+2. Load raw data:
+
+```powershell
+python scripts/load_data.py
+```
+
+3. Clean data:
+
+```powershell
+python scripts/clean_data.py
+```
+
+4. Generate technical features:
+
+```powershell
+python scripts/calculate_features.py
+```
+
+5. Train the production XGBoost model:
+
+```powershell
+python scripts/train_model.py
+```
+
+6. Compare candidate models offline:
+
+```powershell
+python scripts/compare_models.py
+```
+
+7. Process optional local news sentiment:
+
+```powershell
 python scripts/process_news_sentiment.py
 ```
 
-Processed sentiment is cached in `sentiment/data/processed/` as a combined parquet file and per-symbol files such as `RELIANCE_sentiment.parquet`.
-
-Historical alignment rule: news dated `T` may influence signals on date `T` or later only. Future-dated news is never used for earlier stock predictions or backtests.
-
-## Local Fundamentals
-
-Company fundamentals can be placed in `data/fundamentals/` as CSV or Parquet files. Required columns are `symbol` and `date`; optional fields include revenue, net profit, EPS, P/E, P/B, ROE, ROCE, debt-to-equity, margins, free cash flow, market cap, and dividend yield. Alternate names such as `ticker`, `report_date`, `sales`, `pat`, `p/e`, `p/b`, and `d/e` are normalized.
-
-Process local fundamentals with:
+8. Process optional company fundamentals:
 
 ```powershell
 python scripts/process_fundamentals.py
 ```
 
-Processed data is cached at `ml/data/fundamentals/fundamentals_processed.parquet`.
-
-Historical alignment rule: a fundamental record dated `T` may influence signals on date `T` or later only. Future-dated financial data is never used for earlier predictions or backtests.
-
-## Dataset Format
-
-Stock CSV files should contain:
-
-```csv
-Date,Open,High,Low,Close,Volume,Symbol
-2024-01-01,100,105,98,103,500000,TEST
-2024-01-02,103,108,101,107,620000,TEST
-```
-
-Required columns are `Date`, `Open`, `High`, `Low`, `Close`, and `Volume`. If `Symbol` is missing, the loader will later infer the symbol from the filename.
-
-The included `data/stocks/sample_stock.csv` is demo data for development and testing only. It is not real market data and should not be presented as real performance history.
-
-## Setup
-
-Create a Python virtual environment:
+9. Run a backtest:
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-Linux/macOS:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-## Pipeline Commands
-
-```powershell
-python scripts/load_data.py
-python scripts/clean_data.py
-python scripts/calculate_features.py
-python scripts/train_model.py
-python scripts/compare_models.py
-python scripts/predict.py --symbol RELIANCE
 python scripts/run_backtest.py RELIANCE
-python scripts/sync_database.py
-uvicorn backend.app.main:app --reload
 ```
 
-The training command accepts an optional symbol:
+10. Start the backend:
 
 ```powershell
-python scripts/train_model.py --symbol RELIANCE
+.\scripts\start_backend.ps1
 ```
 
-Compare candidate models offline with:
+11. Start the frontend in another terminal:
 
 ```powershell
-python scripts/compare_models.py
+.\scripts\start_frontend.ps1
 ```
 
-This compares a majority-class baseline, Logistic Regression, Random Forest, the current saved XGBoost model, and a modest tuned XGBoost candidate using the same processed dataset, feature list, target definition, and chronological train/validation/test split. Results are saved to `models/experiments/model_comparison.json`, and candidate model files are saved under `models/candidates/`. FastAPI reads these saved artifacts; it does not train models on startup or during prediction requests.
+12. Open the dashboard:
 
-Start the frontend:
+```text
+http://127.0.0.1:5173/
+```
+
+## Backend
+
+Direct backend command:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+Swagger:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+ReDoc:
+
+```text
+http://127.0.0.1:8000/redoc
+```
+
+## Frontend
+
+Direct frontend command:
 
 ```powershell
 cd frontend
-npm install
 npm run dev
 ```
 
-Run tests:
+Production build:
 
 ```powershell
-pytest
+cd frontend
+npm run build
+```
+
+Frontend environment example:
+
+```text
+VITE_API_BASE_URL=http://127.0.0.1:8000/api
 ```
 
 ## PostgreSQL
 
-The SQL schema is in `database/schema.sql`. The application includes SQLAlchemy models for `stocks`, `market_data`, `predictions`, `backtests`, and `model_versions`. Local development can run the API from generated Parquet/model files even before PostgreSQL is started.
+The database is optional for local dashboard use when Parquet/model files already exist. The schema is safe to rerun because it uses `CREATE TABLE IF NOT EXISTS`.
 
-After PostgreSQL is running and `DATABASE_URL` is configured:
+Start PostgreSQL with Docker Compose:
+
+```powershell
+docker compose up -d postgres
+```
+
+Sync local processed market data into PostgreSQL:
 
 ```powershell
 python scripts/sync_database.py
 ```
 
-## Docker
+Tables:
+
+- `stocks`
+- `market_data`
+- `predictions`
+- `backtests`
+- `model_versions`
+
+`market_data` has a `UNIQUE(stock_id, date)` constraint to prevent duplicate historical rows.
+
+## ML Reproducibility
+
+Current production model: `xgboost_current`
+
+Current saved model version: `v1`
+
+Training command:
 
 ```powershell
-docker compose up --build
+python scripts/train_model.py
 ```
 
-Services:
+Model comparison command:
 
-- PostgreSQL: `localhost:5432`
-- FastAPI: `http://localhost:8000`
-- React: `http://localhost:5173`
+```powershell
+python scripts/compare_models.py
+```
 
-## API
+Current comparison uses:
+
+- Chronological per-symbol split: 70% train, 15% validation, 15% final test
+- TimeSeriesSplit expanding-window validation on train+validation data
+- Fixed random seed: 42
+- Target: `1` if next trading day's close is higher than today's close, otherwise `0`
+- Feature count: 25
+- Dataset range in the current artifacts: 2015-10-21 to 2023-12-28
+
+Results can vary slightly across Python, NumPy, Scikit-learn, and XGBoost versions.
+
+## Backtesting
+
+Backtest execution rule:
+
+```text
+Prediction at day T -> trade execution at next trading day's Open
+```
+
+The engine applies initial capital, transaction cost, slippage, whole-share position sizing, a same-range Buy & Hold benchmark, and final liquidation at the final close.
+
+Default example:
+
+```powershell
+python scripts/run_backtest.py RELIANCE
+```
+
+## News Sentiment
+
+Place local historical news files under `data/news/`.
+
+Minimum columns: `date`, `headline`
+
+Optional columns: `symbol`, `article`
+
+Process news:
+
+```powershell
+python scripts/process_news_sentiment.py
+```
+
+The FinBERT model is downloaded and cached locally when available. If the model cannot be downloaded, the rest of the app still works and sentiment endpoints return clear unavailable/no-data states.
+
+Leakage rule:
+
+```text
+News dated T can influence signals on T or later only.
+```
+
+## Fundamental Data
+
+Place local fundamental files under `data/fundamentals/`.
+
+Supported fields include:
+
+```text
+symbol,date,revenue,net_profit,eps,pe_ratio,pb_ratio,roe,roce,debt,debt_to_equity,market_cap,operating_margin,net_margin,free_cash_flow,dividend_yield
+```
+
+Process fundamentals:
+
+```powershell
+python scripts/process_fundamentals.py
+```
+
+Missing metrics are not treated as zero. Fundamental category weights are re-normalized over available categories, and `data_completeness` is reported.
+
+Leakage rule:
+
+```text
+Fundamental records dated T can influence signals on T or later only.
+```
+
+## API Summary
 
 - `GET /api/health`
 - `GET /api/stocks`
 - `GET /api/stocks/{symbol}`
-- `GET /api/stocks/{symbol}/history?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD&limit=500`
+- `GET /api/stocks/{symbol}/history`
 - `GET /api/stocks/{symbol}/indicators`
 - `GET /api/stocks/{symbol}/prediction`
 - `GET /api/stocks/{symbol}/signal`
@@ -186,26 +414,100 @@ Services:
 - `GET /api/model/feature-importance`
 - `GET /api/data/status`
 
-Swagger docs are available at:
+## Testing
+
+Backend and ML tests:
 
 ```powershell
-uvicorn backend.app.main:app --reload
+.\.venv\Scripts\python.exe -m pytest
 ```
 
-Then open `http://127.0.0.1:8000/docs` or `http://127.0.0.1:8000/redoc`.
+Frontend build test:
 
-## Limitations
+```powershell
+cd frontend
+npm run build
+```
 
-- V1 uses local historical files only.
-- Predictions are model analysis, not financial advice.
-- Model confidence is not a guarantee of profit or future performance.
-- Live trading, broker integrations, and live market APIs are intentionally excluded.
+## Demo Flow
 
-## Future Improvements
+Recommended stock for demo: `RELIANCE`
 
-- PySpark and Delta Lake for large-scale processing
-- Kafka streaming
-- Model monitoring
-- Data drift and concept drift detection
-- Automatic retraining
-- Self-healing ML workflows
+1. Open `http://127.0.0.1:5173/`.
+2. Select `RELIANCE`.
+3. Review latest close, date range, and price chart.
+4. Review prediction, confidence, signal, and explanation.
+5. Review news sentiment and company fundamentals if local data is available.
+6. Run a backtest.
+7. Compare strategy return with Buy & Hold.
+8. Review equity curve and trade table.
+9. Scroll to Model Performance and review the model comparison table.
+
+`RELIANCE` is only a demo suggestion and is not hardcoded in the dashboard.
+
+## Screenshots
+
+Screenshots can be added here before final presentation.
+
+Suggested screenshots:
+
+- Dashboard overview
+- Prediction and signal explanation
+- News sentiment and fundamentals
+- Backtest results
+- Model comparison table
+- Swagger docs
+
+## Security And Safety Review
+
+- `.env` is ignored by Git.
+- `.venv/`, `node_modules/`, `frontend/dist/`, pytest temp files, and binary model artifacts are ignored.
+- No API keys are required.
+- No paid APIs are used.
+- No broker API or live trade execution exists.
+- User-facing API errors avoid exposing Python stack traces.
+- Stock symbols, dates, limits, and backtest inputs are validated.
+- The app reads local configured paths and does not expose arbitrary file-path access.
+
+## Deployment Preparation
+
+This project is prepared for future deployment, but no cloud deployment is required yet.
+
+Typical future deployment pieces:
+
+- Backend: any Python ASGI host capable of running FastAPI/Uvicorn
+- Frontend: static hosting for the Vite production build
+- Database: managed or self-hosted PostgreSQL
+- Environment variables: `DATABASE_URL`, `CORS_ORIGINS`, model/data paths
+- Production build: `npm run build`
+
+Keep CORS restricted to the deployed frontend origin in production.
+
+## Docker
+
+Docker Compose is optional. It currently supports PostgreSQL plus local backend/frontend services.
+
+```powershell
+docker compose up --build
+```
+
+Services:
+
+- PostgreSQL: `localhost:5432`
+- FastAPI: `http://localhost:8000`
+- React: `http://localhost:5173`
+
+## Known Limitations
+
+- Uses local historical datasets only.
+- Optional news and fundamental analysis depend on local file coverage.
+- FinBERT may require an initial model download.
+- Current model metrics are only modestly better than random on classification metrics.
+- Historical backtests are not proof of future performance.
+- Model comparison artifacts are generated offline and are not automatically refreshed by the API.
+- Optional sentiment/fundamental-aware backtest modes remain disabled when historical coverage is insufficient.
+- Vite may warn that the production JavaScript chunk is larger than 500 kB.
+
+## Disclaimer
+
+AI MarketGuard is an analytical and educational system. Predictions, signals, model outputs, and historical backtests are not financial advice and do not guarantee future market performance.
